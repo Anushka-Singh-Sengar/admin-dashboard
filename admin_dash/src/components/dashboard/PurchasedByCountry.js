@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { Chart as GoogleChart } from 'react-google-charts';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { format, startOfMonth, endOfMonth, subDays, subMonths } from 'date-fns';
 import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
@@ -17,11 +18,30 @@ const PRESETS = [
   { label: 'Custom Range', getRange: null },
 ];
 
+const geoData = [
+  ['Country', 'Purchased'],
+  ['Germany', 50],
+  ['United States', 300],
+  ['Brazil', 400],
+  ['Canada', 500],
+  ['France', 600],
+  ['India', 987],
+  ['RU', 700],
+];
+
+const geoOptions = {
+  colorAxis: { colors: ['#cedbf9', '#6588d5'] },
+  backgroundColor: '#f5f7fa',
+  datalessRegionColor: '#f5f7fa',
+  tooltip: { textStyle: { color: '#555', fontName: 'Roboto', fontSize: 14 } },
+  chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+};
+
 const hbar1Data = {
   labels: ["India", "USA", "Turkey"],
   datasets: [
     {
-      label: "signup",
+      label: '',
       data: [18, 13, 9.5],
       backgroundColor: "#88aaf3"
     }
@@ -31,13 +51,13 @@ const hbar2Data = {
   labels: ["Florida", "Poland", "UK"],
   datasets: [
     {
-      label: "signup",
+      label: '',
       data: [7.5, 4.6, 4],
       backgroundColor: "#88aaf3"
     }
   ]
 };
-const hbarOptions = {
+const hbar1Options = {
   indexAxis: 'y',
   responsive: true,
   maintainAspectRatio: false,
@@ -81,6 +101,17 @@ const hbarOptions = {
     }
   }
 };
+const hbar2Options = {
+  ...hbar1Options,
+  scales: {
+    ...hbar1Options.scales,
+    x: {
+      ...hbar1Options.scales.x,
+      max: 20,
+      callback: value => value + '%',
+    }
+  }
+};
 
 const PurchasedByCountry = () => {
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
@@ -104,69 +135,80 @@ const PurchasedByCountry = () => {
 
   return (
     <div className="card card-default" id="analytics-country">
-      <div className="card-header justify-content-between d-flex align-items-center">
+      <div className="card-header justify-content-between">
         <h2>Purchased by Country</h2>
-        <div className="dropdown user-activity-dropdown">
-          <button
-            className="btn btn-link dropdown-toggle"
-            type="button"
-            id="countryDropdown"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded={showDropdown ? 'true' : 'false'}
-            onClick={() => setShowDropdown((v) => !v)}
-            style={{ color: '#8a909d', fontSize: '0.875rem', textTransform: 'capitalize' }}
-          >
-            {formattedRange}
-          </button>
-          <div
-            className={`dropdown-menu${showDropdown ? ' show' : ''}`}
-            aria-labelledby="countryDropdown"
-            style={{ minWidth: 180 }}
-          >
-            {PRESETS.map((preset) => (
-              <button
-                key={preset.label}
-                className="dropdown-item"
-                type="button"
-                onClick={() => handlePresetSelect(preset)}
-                style={{ background: 'none', border: 0, width: '100%', textAlign: 'left' }}
-              >
-                <span>{preset.label}</span>
-              </button>
-            ))}
+        <div className="date-range-report ">
+          <div className="dropdown user-activity-dropdown" style={{ display: 'inline-block' }}>
+            <button
+              className="btn btn-link dropdown-toggle"
+              type="button"
+              id="countryDropdown"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded={showDropdown ? 'true' : 'false'}
+              onClick={() => setShowDropdown((v) => !v)}
+              style={{ color: '#8a909d', fontSize: '0.875rem', textTransform: 'capitalize' }}
+            >
+              {formattedRange}
+            </button>
+            <div
+              className={`dropdown-menu${showDropdown ? ' show' : ''}`}
+              aria-labelledby="countryDropdown"
+              style={{ minWidth: 180 }}
+            >
+              {PRESETS.map((preset) => (
+                <button
+                  key={preset.label}
+                  className="dropdown-item"
+                  type="button"
+                  onClick={() => handlePresetSelect(preset)}
+                  style={{ background: 'none', border: 0, width: '100%', textAlign: 'left' }}
+                >
+                  <span>{preset.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
+          {showPicker && (
+            <div style={{ position: 'absolute', right: 0, zIndex: 30, top: '110%' }}>
+              <DateRangePicker
+                onChange={(range) => {
+                  setDateRange(range);
+                  setShowPicker(false);
+                }}
+                value={dateRange}
+                maxDate={new Date()}
+                calendarIcon={null}
+                clearIcon={null}
+                rangeDivider="-"
+              />
+            </div>
+          )}
         </div>
-        {showPicker && (
-          <div style={{ position: 'absolute', right: 0, zIndex: 30, top: '110%' }}>
-            <DateRangePicker
-              onChange={(range) => {
-                setDateRange(range);
-                setShowPicker(false);
-              }}
-              value={dateRange}
-              maxDate={new Date()}
-              calendarIcon={null}
-              clearIcon={null}
-              rangeDivider="-"
-            />
-          </div>
-        )}
       </div>
-      <div className="card-body vector-map-world-2" style={{ minHeight: 320 }}>
-        {/* Placeholder for world map */}
-        <div style={{ width: '100%', height: 220, background: '#f5f7fa', borderRadius: 8, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8a909d', fontFamily: 'Roboto, sans-serif' }}>
-          World Map Placeholder
+      <div className="card-body vector-map-world-2" style={{ height: 350, paddingBottom: 0 }}>
+        <div id="regions_purchase" style={{ height: '100%', width: '100%' }}>
+          <GoogleChart
+            chartType="GeoChart"
+            width="100%"
+            height="100%"
+            data={geoData}
+            options={geoOptions}
+            mapsApiKey=""
+            rootProps={{ 'data-testid': '1' }}
+          />
         </div>
+      </div>
+      <div className="border-top mt-3">
         <div className="row no-gutters">
           <div className="col-lg-6">
-            <div className="world-data-chart border-bottom pt-15px pb-15px" style={{ height: 120 }}>
-              <Bar data={hbar1Data} options={hbarOptions} height={120} />
+            <div className="world-data-chart border-bottom pt-15px pb-15px">
+              <Bar data={hbar1Data} options={hbar1Options} height={120} />
             </div>
           </div>
           <div className="col-lg-6">
-            <div className="world-data-chart pt-15px pb-15px" style={{ height: 120 }}>
-              <Bar data={hbar2Data} options={hbarOptions} height={120} />
+            <div className="world-data-chart pt-15px pb-15px">
+              <Bar data={hbar2Data} options={hbar2Options} height={120} />
             </div>
           </div>
         </div>
