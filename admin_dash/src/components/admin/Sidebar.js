@@ -14,15 +14,9 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-account-group-outline',
     label: 'Vendors',
     submenu: [
-<<<<<<< HEAD
       { label: 'Vendor Grid', to: '/vendor-card' },
       { label: 'Vendor List', to: '/vendor-list' },
       { label: 'Vendors Profile', to: '/vendor-profile' },
-=======
-      { label: 'Vendor Grid', pageKey: 'vendor-grid' },
-      { label: 'Vendor List', pageKey: 'vendor-list' },
-      { label: 'Vendors Profile', pageKey: 'vendor-profile' },
->>>>>>> 5bf56072f7ce0d7648c3b0f30c92c0a9347a66e4
     ],
   },
   {
@@ -30,9 +24,9 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-account-group',
     label: 'Users',
     submenu: [
-      { label: 'User Grid', pageKey: 'user-grid' },
-      { label: 'User List', pageKey: 'user-list' },
-      { label: 'Users Profile', pageKey: 'user-profile' },
+      { label: 'User Grid', to: '/user-grid' },
+      { label: 'User List', to: '/user-list' },
+      { label: 'Users Profile', to: '/user-profile' },
     ],
     hr: true,
   },
@@ -109,7 +103,7 @@ const SIDEBAR_MENUS = [
   },
 ];
 
-const Sidebar = ({ isSidebarMinified, currentPage, setCurrentPage }) => {
+const Sidebar = ({ isSidebarMinified }) => {
   const [openMenu, setOpenMenu] = useState(null);
 
   const handleMenuClick = (e, key) => {
@@ -117,49 +111,23 @@ const Sidebar = ({ isSidebarMinified, currentPage, setCurrentPage }) => {
     setOpenMenu((prev) => (prev === key ? null : key));
   };
 
-  const handlePageClick = (e, pageKey) => {
-    e.preventDefault();
-    setCurrentPage(pageKey);
-  };
-
-  const isCurrentPage = (pageKey) => {
-    return currentPage === pageKey;
-  };
-
-  const isCurrentMenu = (menuKey) => {
-    const menu = SIDEBAR_MENUS.find(m => m.key === menuKey);
-    if (menu && menu.submenu) {
-      return menu.submenu.some(item => item.pageKey === currentPage);
-    }
-    return false;
-  };
-
   return (
     <div className="ec-left-sidebar ec-bg-sidebar">
       <div id="sidebar" className="sidebar ec-sidebar-footer">
         <div className="ec-brand">
-          <a href="#" onClick={(e) => handlePageClick(e, 'dashboard')} title="Proyo">
+          <NavLink to="/" title="Proyo">
             <img className="ec-brand-icon" src="/assets/img/logo/ec-site-logo.png" alt="Proyo Logo" style={{ display: 'block', maxWidth: 30, width: '100%', height: 'auto' }} />
             {!isSidebarMinified && <span className="ec-brand-name text-truncate">Proyo</span>}
-          </a>
+          </NavLink>
         </div>
         <div className="ec-navigation" data-simplebar>
           <ul className="nav sidebar-inner" id="sidebar-menu">
-            {SIDEBAR_MENUS.map((menu, idx) => {
+            {SIDEBAR_MENUS.map((menu) => {
               if (menu.type === 'dashboard' || menu.type === 'reviews' || menu.type === 'brands') {
                 return (
                   <React.Fragment key={menu.label}>
-<<<<<<< HEAD
-                    <li className={menu.type === 'dashboard' ? 'active' : ''}>
-                      <NavLink className="sidenav-item-link" to={menu.href} end>
-=======
-                    <li className={isCurrentPage(menu.pageKey) ? 'active' : ''}>
-                      <a 
-                        className="sidenav-item-link" 
-                        href="#"
-                        onClick={(e) => handlePageClick(e, menu.pageKey)}
-                      >
->>>>>>> 5bf56072f7ce0d7648c3b0f30c92c0a9347a66e4
+                    <li>
+                      <NavLink className="sidenav-item-link" to={menu.pageKey === 'dashboard' ? '/' : `/${menu.pageKey}`} end>
                         <i className={`mdi ${menu.icon}`}></i>
                         {!isSidebarMinified && <span className="nav-text">{menu.label}</span>}
                       </NavLink>
@@ -171,7 +139,7 @@ const Sidebar = ({ isSidebarMinified, currentPage, setCurrentPage }) => {
               // Submenus
               return (
                 <React.Fragment key={menu.key}>
-                  <li className={`has-sub${isCurrentMenu(menu.key) ? ' active expand' : ''}`}>
+                  <li className={`has-sub${openMenu === menu.key ? ' active expand' : ''}`}>
                     <a
                       className="sidenav-item-link"
                       href="#"
@@ -185,32 +153,20 @@ const Sidebar = ({ isSidebarMinified, currentPage, setCurrentPage }) => {
                     <div className={`collapse${openMenu === menu.key ? ' show' : ''}`}> 
                       <ul className="sub-menu" id={menu.key} data-parent="#sidebar-menu">
                         {menu.submenu.map((item) => (
-<<<<<<< HEAD
-                          <li key={item.to || item.href} className="">
+                          <li key={item.to || item.pageKey}>
                             {item.to ? (
                               <NavLink className="sidenav-item-link" to={item.to} end>
                                 {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
                               </NavLink>
                             ) : (
-                              <a className="sidenav-item-link" href={item.href}>
+                              <a className="sidenav-item-link" href="#">
                                 {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
                               </a>
                             )}
-=======
-                          <li key={item.pageKey} className={isCurrentPage(item.pageKey) ? 'active' : ''}>
-                            <a 
-                              className="sidenav-item-link" 
-                              href="#"
-                              onClick={(e) => handlePageClick(e, item.pageKey)}
-                            >
-                              {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
-                            </a>
->>>>>>> 5bf56072f7ce0d7648c3b0f30c92c0a9347a66e4
                           </li>
                         ))}
                       </ul>
                     </div>
-                    {menu.hr && <hr />}
                   </li>
                 </React.Fragment>
               );
@@ -222,4 +178,4 @@ const Sidebar = ({ isSidebarMinified, currentPage, setCurrentPage }) => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

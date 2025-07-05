@@ -7,7 +7,7 @@ const initialProfile = {
   email: 'john.example@gmail.com',
   phone: '+00 1234 5678 91',
   birthday: 'Dec 10, 1991',
-  image: 'assets/img/user/u6.jpg',
+  image: '/assets/img/user/u6.jpg',
 };
 
 const VendorProfile = () => {
