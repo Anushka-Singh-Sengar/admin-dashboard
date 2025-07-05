@@ -6,7 +6,7 @@ const SIDEBAR_MENUS = [
     type: 'dashboard',
     icon: 'mdi-view-dashboard-outline',
     label: 'Dashboard',
-    href: '/',
+    pageKey: 'dashboard',
     hr: true,
   },
   {
@@ -14,9 +14,15 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-account-group-outline',
     label: 'Vendors',
     submenu: [
+<<<<<<< HEAD
       { label: 'Vendor Grid', to: '/vendor-card' },
       { label: 'Vendor List', to: '/vendor-list' },
       { label: 'Vendors Profile', to: '/vendor-profile' },
+=======
+      { label: 'Vendor Grid', pageKey: 'vendor-grid' },
+      { label: 'Vendor List', pageKey: 'vendor-list' },
+      { label: 'Vendors Profile', pageKey: 'vendor-profile' },
+>>>>>>> 5bf56072f7ce0d7648c3b0f30c92c0a9347a66e4
     ],
   },
   {
@@ -24,9 +30,9 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-account-group',
     label: 'Users',
     submenu: [
-      { label: 'User Grid', href: '/user-card' },
-      { label: 'User List', href: '/user-list' },
-      { label: 'Users Profile', href: '/user-profile' },
+      { label: 'User Grid', pageKey: 'user-grid' },
+      { label: 'User List', pageKey: 'user-list' },
+      { label: 'Users Profile', pageKey: 'user-profile' },
     ],
     hr: true,
   },
@@ -35,8 +41,8 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-dns-outline',
     label: 'Categories',
     submenu: [
-      { label: 'Main Category', href: '/main-category' },
-      { label: 'Sub Category', href: '/sub-category' },
+      { label: 'Main Category', pageKey: 'main-category' },
+      { label: 'Sub Category', pageKey: 'sub-category' },
     ],
   },
   {
@@ -44,10 +50,10 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-palette-advanced',
     label: 'Products',
     submenu: [
-      { label: 'Add Product', href: '/product-add' },
-      { label: 'List Product', href: '/product-list' },
-      { label: 'Grid Product', href: '/product-grid' },
-      { label: 'Product Detail', href: '/product-detail' },
+      { label: 'Add Product', pageKey: 'product-add' },
+      { label: 'List Product', pageKey: 'product-list' },
+      { label: 'Grid Product', pageKey: 'product-grid' },
+      { label: 'Product Detail', pageKey: 'product-detail' },
     ],
   },
   {
@@ -55,23 +61,23 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-cart',
     label: 'Orders',
     submenu: [
-      { label: 'New Order', href: '/new-order' },
-      { label: 'Order History', href: '/order-history' },
-      { label: 'Order Detail', href: '/order-detail' },
-      { label: 'Invoice', href: '/invoice' },
+      { label: 'New Order', pageKey: 'new-order' },
+      { label: 'Order History', pageKey: 'order-history' },
+      { label: 'Order Detail', pageKey: 'order-detail' },
+      { label: 'Invoice', pageKey: 'invoice' },
     ],
   },
   {
     type: 'reviews',
     icon: 'mdi-star-half',
     label: 'Reviews',
-    href: '/review-list',
+    pageKey: 'review-list',
   },
   {
     type: 'brands',
     icon: 'mdi-tag-faces',
     label: 'Brands',
-    href: '/brand-list',
+    pageKey: 'brand-list',
     hr: true,
   },
   {
@@ -79,8 +85,8 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-login',
     label: 'Authentication',
     submenu: [
-      { label: 'Sign In', href: '/sign-in' },
-      { label: 'Sign Up', href: '/sign-up' },
+      { label: 'Sign In', pageKey: 'sign-in' },
+      { label: 'Sign Up', pageKey: 'sign-up' },
     ],
   },
   {
@@ -88,9 +94,9 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-diamond-stone',
     label: 'Icons',
     submenu: [
-      { label: 'Material Icon', href: '/material-icon' },
-      { label: 'Font Awsome Icon', href: '/font-awsome-icons' },
-      { label: 'Flag Icon', href: '/flag-icon' },
+      { label: 'Material Icon', pageKey: 'material-icon' },
+      { label: 'Font Awsome Icon', pageKey: 'font-awsome-icons' },
+      { label: 'Flag Icon', pageKey: 'flag-icon' },
     ],
   },
   {
@@ -98,12 +104,12 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-image-filter-none',
     label: 'Other Pages',
     submenu: [
-      { label: '404 Page', href: '/404' },
+      { label: '404 Page', pageKey: '404' },
     ],
   },
 ];
 
-const Sidebar = ({ isSidebarMinified }) => {
+const Sidebar = ({ isSidebarMinified, currentPage, setCurrentPage }) => {
   const [openMenu, setOpenMenu] = useState(null);
 
   const handleMenuClick = (e, key) => {
@@ -111,11 +117,28 @@ const Sidebar = ({ isSidebarMinified }) => {
     setOpenMenu((prev) => (prev === key ? null : key));
   };
 
+  const handlePageClick = (e, pageKey) => {
+    e.preventDefault();
+    setCurrentPage(pageKey);
+  };
+
+  const isCurrentPage = (pageKey) => {
+    return currentPage === pageKey;
+  };
+
+  const isCurrentMenu = (menuKey) => {
+    const menu = SIDEBAR_MENUS.find(m => m.key === menuKey);
+    if (menu && menu.submenu) {
+      return menu.submenu.some(item => item.pageKey === currentPage);
+    }
+    return false;
+  };
+
   return (
     <div className="ec-left-sidebar ec-bg-sidebar">
       <div id="sidebar" className="sidebar ec-sidebar-footer">
         <div className="ec-brand">
-          <a href="/" title="Proyo">
+          <a href="#" onClick={(e) => handlePageClick(e, 'dashboard')} title="Proyo">
             <img className="ec-brand-icon" src="/assets/img/logo/ec-site-logo.png" alt="Proyo Logo" style={{ display: 'block', maxWidth: 30, width: '100%', height: 'auto' }} />
             {!isSidebarMinified && <span className="ec-brand-name text-truncate">Proyo</span>}
           </a>
@@ -126,8 +149,17 @@ const Sidebar = ({ isSidebarMinified }) => {
               if (menu.type === 'dashboard' || menu.type === 'reviews' || menu.type === 'brands') {
                 return (
                   <React.Fragment key={menu.label}>
+<<<<<<< HEAD
                     <li className={menu.type === 'dashboard' ? 'active' : ''}>
                       <NavLink className="sidenav-item-link" to={menu.href} end>
+=======
+                    <li className={isCurrentPage(menu.pageKey) ? 'active' : ''}>
+                      <a 
+                        className="sidenav-item-link" 
+                        href="#"
+                        onClick={(e) => handlePageClick(e, menu.pageKey)}
+                      >
+>>>>>>> 5bf56072f7ce0d7648c3b0f30c92c0a9347a66e4
                         <i className={`mdi ${menu.icon}`}></i>
                         {!isSidebarMinified && <span className="nav-text">{menu.label}</span>}
                       </NavLink>
@@ -139,7 +171,7 @@ const Sidebar = ({ isSidebarMinified }) => {
               // Submenus
               return (
                 <React.Fragment key={menu.key}>
-                  <li className="has-sub">
+                  <li className={`has-sub${isCurrentMenu(menu.key) ? ' active expand' : ''}`}>
                     <a
                       className="sidenav-item-link"
                       href="#"
@@ -153,6 +185,7 @@ const Sidebar = ({ isSidebarMinified }) => {
                     <div className={`collapse${openMenu === menu.key ? ' show' : ''}`}> 
                       <ul className="sub-menu" id={menu.key} data-parent="#sidebar-menu">
                         {menu.submenu.map((item) => (
+<<<<<<< HEAD
                           <li key={item.to || item.href} className="">
                             {item.to ? (
                               <NavLink className="sidenav-item-link" to={item.to} end>
@@ -163,6 +196,16 @@ const Sidebar = ({ isSidebarMinified }) => {
                                 {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
                               </a>
                             )}
+=======
+                          <li key={item.pageKey} className={isCurrentPage(item.pageKey) ? 'active' : ''}>
+                            <a 
+                              className="sidenav-item-link" 
+                              href="#"
+                              onClick={(e) => handlePageClick(e, item.pageKey)}
+                            >
+                              {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
+                            </a>
+>>>>>>> 5bf56072f7ce0d7648c3b0f30c92c0a9347a66e4
                           </li>
                         ))}
                       </ul>
