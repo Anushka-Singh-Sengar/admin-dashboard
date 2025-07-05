@@ -2,20 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('home2');
   const [showProfile, setShowProfile] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
 
   const profileRef = useRef();
-  const notificationsRef = useRef();
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setShowProfile(false);
-      }
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
-        setShowNotifications(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -28,9 +22,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
     console.log('Searching for:', searchQuery);
   };
 
-  const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-  };
+
 
   return (
     <header className="ec-main-header" id="header">
@@ -81,12 +73,12 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                 aria-expanded={showProfile}
                 onClick={() => setShowProfile((prev) => !prev)}
               >
-                <img src="/assets/img/user/user.png" className="user-image" alt="User" style={{ width: 40, height: 40, borderRadius: 15, objectFit: 'cover', display: 'block' }} />
+                <img src="/assets/img/user/user.png" className="user-image" alt="User Image" />
               </button>
               <ul className={`dropdown-menu dropdown-menu-right ec-dropdown-menu${showProfile ? ' show' : ''}`}>
                 {/* User image */}
                 <li className="dropdown-header">
-                  <img src="/assets/img/user/user.png" className="img-circle" alt="User" style={{ width: 60, height: 60, borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto' }} />
+                  <img src="/assets/img/user/user.png" className="img-circle" alt="User Image" />
                   <div className="d-inline-block">
                     John Deo <small className="pt-1">john.example@gmail.com</small>
                   </div>
@@ -107,7 +99,15 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                   </a>
                 </li>
                 <li className="right-sidebar-in">
-                  <a href="#"> 
+                  <a 
+                    href="javascript:0" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (window.toggleSettings) {
+                        window.toggleSettings();
+                      }
+                    }}
+                  > 
                     <i className="mdi mdi-settings-outline"></i> Setting 
                   </a>
                 </li>
@@ -120,12 +120,12 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
             </li>
 
             {/* Notifications */}
-            <li className="dropdown notifications-menu custom-dropdown" ref={notificationsRef}>
-              <button className="dropdown-toggle notify-toggler custom-dropdown-toggler" onClick={() => setShowNotifications((prev) => !prev)}>
+            <li className="dropdown notifications-menu custom-dropdown">
+              <button className="dropdown-toggle notify-toggler custom-dropdown-toggler">
                 <i className="mdi mdi-bell-outline"></i>
               </button>
 
-              <div className={`card card-default dropdown-notify dropdown-menu-right mb-0${showNotifications ? ' show' : ''}`}>
+              <div className="card card-default dropdown-notify dropdown-menu-right mb-0">
                 <div className="card-header card-header-border-bottom px-3">
                   <h2>Notifications</h2>
                 </div>
@@ -135,10 +135,13 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                     <li className="nav-item mx-3 my-0 py-0">
                       <a 
                         href="#" 
-                        className={`nav-link pb-3 ${activeTab === 'home2' ? 'active' : ''}`}
-                        onClick={() => handleTabChange('home2')}
+                        className="nav-link active pb-3" 
+                        id="home2-tab"
+                        data-bs-toggle="tab" 
+                        data-bs-target="#home2" 
                         role="tab"
-                        aria-selected={activeTab === 'home2'}
+                        aria-controls="home2" 
+                        aria-selected="true"
                       >
                         All (10)
                       </a>
@@ -146,10 +149,13 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                     <li className="nav-item mx-3 my-0 py-0">
                       <a 
                         href="#" 
-                        className={`nav-link pb-3 ${activeTab === 'profile2' ? 'active' : ''}`}
-                        onClick={() => handleTabChange('profile2')}
-                        role="tab"
-                        aria-selected={activeTab === 'profile2'}
+                        className="nav-link pb-3" 
+                        id="profile2-tab" 
+                        data-bs-toggle="tab"
+                        data-bs-target="#profile2" 
+                        role="tab" 
+                        aria-controls="profile2"
+                        aria-selected="false"
                       >
                         Msgs (5)
                       </a>
@@ -157,10 +163,13 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                     <li className="nav-item mx-3 my-0 py-0">
                       <a 
                         href="#" 
-                        className={`nav-link pb-3 ${activeTab === 'contact2' ? 'active' : ''}`}
-                        onClick={() => handleTabChange('contact2')}
-                        role="tab"
-                        aria-selected={activeTab === 'contact2'}
+                        className="nav-link pb-3" 
+                        id="contact2-tab" 
+                        data-bs-toggle="tab"
+                        data-bs-target="#contact2" 
+                        role="tab" 
+                        aria-controls="contact2"
+                        aria-selected="false"
                       >
                         Others (5)
                       </a>
@@ -169,12 +178,12 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
 
                   <div className="tab-content" id="myNotifications">
                     {/* All Notifications Tab */}
-                    <div className={`tab-pane fade ${activeTab === 'home2' ? 'show active' : ''}`} id="home2" role="tabpanel">
+                    <div className="tab-pane fade show active" id="home2" role="tabpanel">
                       <ul className="list-unstyled" data-simplebar style={{ height: '360px' }}>
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u2.jpg" alt="Image" />
                               <span className="status away"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -192,7 +201,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification media-active">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u1.jpg" alt="Image" />
                               <span className="status active"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -210,7 +219,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u5.jpg" alt="Image" />
                               <span className="status away"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -315,12 +324,12 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                     </div>
 
                     {/* Messages Tab */}
-                    <div className={`tab-pane fade ${activeTab === 'profile2' ? 'show active' : ''}`} id="profile2" role="tabpanel">
+                    <div className="tab-pane fade" id="profile2" role="tabpanel">
                       <ul className="list-unstyled" data-simplebar style={{ height: '360px' }}>
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u6.jpg" alt="Image" />
                               <span className="status away"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -338,7 +347,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u7.jpg" alt="Image" />
                               <span className="status away"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -356,7 +365,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification media-active">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u1.jpg" alt="Image" />
                               <span className="status active"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -374,7 +383,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u2.jpg" alt="Image" />
                               <span className="status away"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -392,7 +401,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification">
                             <div className="position-relative mr-3">
-                              <img className="rounded-circle" src="/assets/img/user/user.png" alt="Image" />
+                              <img className="rounded-circle" src="/assets/img/user/u5.jpg" alt="Image" />
                               <span className="status away"></span>
                             </div>
                             <div className="media-body d-flex justify-content-between">
@@ -410,7 +419,7 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
                     </div>
 
                     {/* Others Tab */}
-                    <div className={`tab-pane fade ${activeTab === 'contact2' ? 'show active' : ''}`} id="contact2" role="tabpanel">
+                    <div className="tab-pane fade" id="contact2" role="tabpanel">
                       <ul className="list-unstyled" data-simplebar style={{ height: '360px' }}>
                         <li>
                           <a href="javascript:void(0)" className="media media-message media-notification event-active">
@@ -507,7 +516,16 @@ const Header = ({ isSidebarMinified, toggleSidebarMinified }) => {
 
             {/* Settings */}
             <li className="right-sidebar-in right-sidebar-2-menu">
-              <i className="mdi mdi-settings-outline mdi-spin"></i>
+              <button 
+                onClick={() => {
+                  if (window.toggleSettings) {
+                    window.toggleSettings();
+                  }
+                }} 
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                <i className="mdi mdi-settings-outline mdi-spin"></i>
+              </button>
             </li>
           </ul>
         </div>

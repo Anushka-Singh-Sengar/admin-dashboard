@@ -28,7 +28,7 @@ const products = [
 ];
 
 const TopProducts = ({ cardClass = '' }) => (
-  <div className={`card card-default ec-card-top-prod ${cardClass}`}>
+  <div className={`card card-default ec-card-top-prod h-100 ${cardClass}`}>
     <div className="card-header justify-content-between">
       <h2>Top Products</h2>
       <div>

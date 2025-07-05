@@ -114,9 +114,9 @@ const Sidebar = ({ isSidebarMinified }) => {
     <div className="ec-left-sidebar ec-bg-sidebar">
       <div id="sidebar" className="sidebar ec-sidebar-footer">
         <div className="ec-brand">
-          <a href="/" title="Ekka">
-            <img className="ec-brand-icon" src="/assets/img/logo/ec-site-logo.png" alt="Ekka Logo" style={{ display: 'block', maxWidth: 30, width: '100%', height: 'auto' }} />
-            {!isSidebarMinified && <span className="ec-brand-name text-truncate">Ekka</span>}
+          <a href="/" title="Proyo">
+            <img className="ec-brand-icon" src="/assets/img/logo/ec-site-logo.png" alt="Proyo Logo" style={{ display: 'block', maxWidth: 30, width: '100%', height: 'auto' }} />
+            {!isSidebarMinified && <span className="ec-brand-name text-truncate">Proyo</span>}
           </a>
         </div>
         <div className="ec-navigation" data-simplebar>

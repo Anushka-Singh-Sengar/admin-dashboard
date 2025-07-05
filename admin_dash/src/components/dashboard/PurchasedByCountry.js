@@ -41,7 +41,6 @@ const hbar1Data = {
   labels: ["India", "USA", "Turkey"],
   datasets: [
     {
-      label: '',
       data: [18, 13, 9.5],
       backgroundColor: "#88aaf3"
     }
@@ -51,7 +50,6 @@ const hbar2Data = {
   labels: ["Florida", "Poland", "UK"],
   datasets: [
     {
-      label: '',
       data: [7.5, 4.6, 4],
       backgroundColor: "#88aaf3"
     }
@@ -61,7 +59,23 @@ const hbar1Options = {
   indexAxis: 'y',
   responsive: true,
   maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
+  plugins: {
+    legend: { display: false },
+    title: { display: false },
+    tooltip: {
+      backgroundColor: 'rgba(256,256,256,0.95)',
+      titleColor: '#888',
+      bodyColor: '#555',
+      borderColor: 'rgba(220, 220, 220, 0.9)',
+      borderWidth: 2,
+      caretSize: 6,
+      caretPadding: 5,
+      xPadding: 10,
+      yPadding: 7,
+      titleFont: { size: 12 },
+      bodyFont: { size: 15 }
+    }
+  },
   scales: {
     x: {
       grid: { color: '#eee', drawBorder: false, zeroLineColor: '#eee', tickMarkLength: 3 },
@@ -85,21 +99,6 @@ const hbar1Options = {
   },
   layout: { padding: { right: 10 } },
   interaction: { mode: 'index' },
-  plugins: {
-    tooltip: {
-      backgroundColor: 'rgba(256,256,256,0.95)',
-      titleColor: '#888',
-      bodyColor: '#555',
-      borderColor: 'rgba(220, 220, 220, 0.9)',
-      borderWidth: 2,
-      caretSize: 6,
-      caretPadding: 5,
-      xPadding: 10,
-      yPadding: 7,
-      titleFont: { size: 12 },
-      bodyFont: { size: 15 }
-    }
-  }
 };
 const hbar2Options = {
   ...hbar1Options,
@@ -110,7 +109,7 @@ const hbar2Options = {
       max: 20,
       callback: value => value + '%',
     }
-  }
+  },
 };
 
 const PurchasedByCountry = () => {

@@ -47,10 +47,6 @@ body {
 }
 
 .ec-main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   width: 100%;
   z-index: 1002;
   height: 70px;
@@ -59,12 +55,37 @@ body {
   display: flex;
   align-items: center;
 }
+.ec-header-fixed .ec-main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.ec-header-static .ec-main-header {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+}
+.ec-header-static .ec-page-wrapper {
+  margin-top: 0 !important;
+}
+.ec-header-static .content {
+  padding-top: 0 !important;
+}
 
 .ec-page-wrapper {
-  margin-top: 70px;
   padding: 24px 24px 0 24px;
   background: #fdfdfd;
   min-height: calc(100vh - 70px);
+}
+.ec-header-fixed .ec-page-wrapper {
+  padding-top: 4.4rem;
+}
+@media (max-width: 767.98px) {
+  .ec-header-fixed .ec-page-wrapper {
+    padding-top: 7.4rem;
+  }
 }
 
 /* Sidebar logo always visible */
@@ -272,4 +293,13 @@ body {
 }
 .sidebar-minify-switch:hover {
   background: #e0e0e0 !important;
+}
+
+/* Fix: Remove top padding from .content when header is static */
+.ec-header-static .content {
+  padding-top: 0 !important;
+}
+
+.ec-header-static .ec-page-wrapper {
+  margin-top: 0 !important;
 } 

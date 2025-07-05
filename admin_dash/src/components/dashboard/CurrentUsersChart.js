@@ -8,7 +8,7 @@ const data = {
   ],
   datasets: [
     {
-      label: '',
+      // label: '', // Removed to prevent blue box
       data: [15, 30, 27, 43, 39, 18, 42, 25, 13, 18, 59],
       backgroundColor: '#88aaf3',
     },
@@ -18,7 +18,24 @@ const data = {
 const options = {
   responsive: true,
   maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
+  plugins: {
+    legend: { display: false },
+    title: { display: false },
+    tooltip: {
+      mode: 'index',
+      backgroundColor: 'rgba(256,256,256,0.95)',
+      titleColor: '#888',
+      bodyColor: '#555',
+      borderColor: 'rgba(220, 220, 220, 0.9)',
+      borderWidth: 2,
+      caretSize: 6,
+      caretPadding: 5,
+      xPadding: 10,
+      yPadding: 7,
+      titleFont: { size: 12 },
+      bodyFont: { size: 15 },
+    },
+  },
   scales: {
     x: {
       grid: { drawBorder: true, display: false },
@@ -40,22 +57,6 @@ const options = {
         display: true,
         beginAtZero: true,
       },
-    },
-  },
-  plugins: {
-    tooltip: {
-      mode: 'index',
-      backgroundColor: 'rgba(256,256,256,0.95)',
-      titleColor: '#888',
-      bodyColor: '#555',
-      borderColor: 'rgba(220, 220, 220, 0.9)',
-      borderWidth: 2,
-      caretSize: 6,
-      caretPadding: 5,
-      xPadding: 10,
-      yPadding: 7,
-      titleFont: { size: 12 },
-      bodyFont: { size: 15 },
     },
   },
 };

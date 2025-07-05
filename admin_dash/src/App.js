@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from './components/admin/Sidebar';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import Settings from './components/layout/Settings';
 import './App.css'; // Optional: for custom styles if needed
 import Dashboard from './components/Dashboard';
 
@@ -32,6 +33,9 @@ function App() {
         {/* Footer */}
         <Footer />
       </div>
+      
+      {/* Settings Panel - rendered at root level */}
+      <Settings />
     </div>
   );
 }

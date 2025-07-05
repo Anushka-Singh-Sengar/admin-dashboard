@@ -46,7 +46,7 @@ const customers = [
 ];
 
 const NewCustomers = ({ cardClass = '' }) => (
-  <div className={`card ec-cust-card card-table-border-none card-default ${cardClass}`}>
+  <div className={`card ec-cust-card card-table-border-none card-default h-100 d-flex flex-column ${cardClass}`}>
     <div className="card-header justify-content-between ">
       <h2>New Customers</h2>
       <div>
@@ -63,7 +63,7 @@ const NewCustomers = ({ cardClass = '' }) => (
         </div>
       </div>
     </div>
-    <div className="card-body pt-0 pb-15px">
+    <div className="card-body pt-0 pb-15px flex-grow-1">
       <table className="table ">
         <tbody>
           {customers.map((c, idx) => (

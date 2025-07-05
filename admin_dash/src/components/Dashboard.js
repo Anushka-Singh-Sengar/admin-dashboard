@@ -42,11 +42,11 @@ const Dashboard = () => (
         <RecentOrders />
       </div>
     </div>
-    <div className="row">
-      <div className="col-xl-5">
+    <div className="row d-flex align-items-stretch">
+      <div className="col-xl-5 d-flex">
         <NewCustomers />
       </div>
-      <div className="col-xl-7">
+      <div className="col-xl-7 d-flex">
         <TopProducts />
       </div>
     </div>
