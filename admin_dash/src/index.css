@@ -3,3 +3,25 @@ html, body, #root {
   margin: 0;
   padding: 0;
 } 
+
+/* Ekka template DataTables controls CSS (global override for DataTables) */
+div.dataTables_wrapper div.dataTables_length select {
+  margin: 0 5px;
+  border-color: #f3f3f3;
+  border-radius: 10px;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+  border-color: #f3f3f3;
+  border-radius: 10px;
+}
+@media (max-width: 575.98px) {
+  .dataTables_length {
+    width: 100% !important;
+    margin-bottom: 15px;
+  }
+}
+@media (max-width: 575.98px) {
+  #responsive-data-table_filter {
+    width: 100% !important;
+  }
+} 

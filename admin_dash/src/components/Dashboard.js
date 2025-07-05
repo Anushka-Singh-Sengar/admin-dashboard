@@ -9,6 +9,7 @@ import SoldByItems from './dashboard/SoldByItems';
 import RecentOrders from './dashboard/RecentOrders';
 import NewCustomers from './dashboard/NewCustomers';
 import TopProducts from './dashboard/TopProducts';
+// import VendorsGrid from './vendors/VendorsGrid';
 
 const Dashboard = () => (
   <div className="container-fluid mt-4">

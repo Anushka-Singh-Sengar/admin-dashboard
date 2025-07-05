@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const SIDEBAR_MENUS = [
   {
@@ -13,9 +14,9 @@ const SIDEBAR_MENUS = [
     icon: 'mdi-account-group-outline',
     label: 'Vendors',
     submenu: [
-      { label: 'Vendor Grid', href: '/vendor-card' },
-      { label: 'Vendor List', href: '/vendor-list' },
-      { label: 'Vendors Profile', href: '/vendor-profile' },
+      { label: 'Vendor Grid', to: '/vendor-card' },
+      { label: 'Vendor List', to: '/vendor-list' },
+      { label: 'Vendors Profile', to: '/vendor-profile' },
     ],
   },
   {
@@ -126,10 +127,10 @@ const Sidebar = ({ isSidebarMinified }) => {
                 return (
                   <React.Fragment key={menu.label}>
                     <li className={menu.type === 'dashboard' ? 'active' : ''}>
-                      <a className="sidenav-item-link" href={menu.href}>
+                      <NavLink className="sidenav-item-link" to={menu.href} end>
                         <i className={`mdi ${menu.icon}`}></i>
                         {!isSidebarMinified && <span className="nav-text">{menu.label}</span>}
-                      </a>
+                      </NavLink>
                       {menu.hr && <hr />}
                     </li>
                   </React.Fragment>
@@ -152,10 +153,16 @@ const Sidebar = ({ isSidebarMinified }) => {
                     <div className={`collapse${openMenu === menu.key ? ' show' : ''}`}> 
                       <ul className="sub-menu" id={menu.key} data-parent="#sidebar-menu">
                         {menu.submenu.map((item) => (
-                          <li key={item.href} className="">
-                            <a className="sidenav-item-link" href={item.href}>
-                              {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
-                            </a>
+                          <li key={item.to || item.href} className="">
+                            {item.to ? (
+                              <NavLink className="sidenav-item-link" to={item.to} end>
+                                {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
+                              </NavLink>
+                            ) : (
+                              <a className="sidenav-item-link" href={item.href}>
+                                {!isSidebarMinified && <span className="nav-text">{item.label}</span>}
+                              </a>
+                            )}
                           </li>
                         ))}
                       </ul>
